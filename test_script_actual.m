@@ -40,7 +40,7 @@ disp(subfolder_name);
 picture_names = dir(strcat(subfolder_name, '*.fit'));
 disp(picture_names);
 
-for picture = picture_names(1:2, :)'
+for picture = picture_names(1:1, :)'
     fieldname = 'name';
     picture_filename = strcat(subfolder_name, picture.(fieldname));
     disp(picture_filename);
@@ -51,4 +51,28 @@ for picture = picture_names(1:2, :)'
     imshow(calibrated_picture, [0, 10000]);
     figure
     imshow(picture_data, [0, 9300]);
+    showimage(calibrated_picture, 'log', 0.5, 99.5);
+end
+
+function showimage(image, arg, lower_pctg, higher_pctg)
+    image_line = reshape(image, 1, []);
+    if ~exist(arg,'var')
+     % third parameter does not exist, so default it to something
+        arg = 'auto';
+    end
+    if strcmp(arg, 'log')
+        figure
+        log_image = log(image_line);
+        lower_bound = prctile(log_image, lower_pctg);
+        upper_bound = prctile(log_image, higher_pctg);
+        imshow(log(image), [lower_bound, upper_bound]);
+    else
+        figure
+        lower_bound = prctile(image_line, lower_pctg);
+        upper_bound = prctile(image_line, higher_pctg);
+        disp(lower_bound);
+        disp(upper_bound);
+        imshow(image, [lower_bound, upper_bound]);
+    end
+    
 end

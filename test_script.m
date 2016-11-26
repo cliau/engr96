@@ -77,7 +77,7 @@ for subfolder = exposures
     ylabel('y');
     xlabel('x');
     
-    filename = char(strcat(subfolder, '_master.fits'));
+    filename = char(strcat(subfolder, '_master.fit'));
     fitswrite(mean_picture, filename);
     
 end

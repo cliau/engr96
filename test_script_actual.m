@@ -51,7 +51,8 @@ for picture = picture_names(1:1, :)'
     imshow(calibrated_picture, [0, 10000]);
     figure
     imshow(picture_data, [0, 9300]);
-    showimage(calibrated_picture, 'log', 0.5, 99.5);
+    showimage(picture_data, [], 0.05, 99.95);
+    showimage(calibrated_picture, [], 0.05, 99.95);
 end
 
 function showimage(image, arg, lower_pctg, higher_pctg)

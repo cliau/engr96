@@ -73,9 +73,10 @@ for subfolder = exposures
     figure
     h = surf(mean_picture);
     set(h,'LineStyle','none');
-    zlabel('brightness');
+    zlabel('intensity');
     ylabel('y');
     xlabel('x');
+    title(strcat('Dark image: ', subfolder, ' s'));
     
     filename = char(strcat(subfolder, '_master.fit'));
     fitswrite(mean_picture, filename);
@@ -99,6 +100,10 @@ mean_picture = picture_data ./ length(picture_names);
 figure
 h = surf(mean_picture);
 set(h,'LineStyle','none');
+zlabel('intensity');
+xlabel('x');
+ylabel('y');
+title('Uncalibrated flat frame');
 
 left = uint8(rows/2 - rows/4);
 right = uint8(rows/2 + rows/4);
@@ -112,8 +117,12 @@ flat_calibration_matrix = flat_average ./ mean_picture;
 
 figure
 h = surf(flat_calibration_matrix);
-set(h,'LineStyle','none')
+set(h,'LineStyle','none');
 zlabel('normalized calibration coefficient');
+xlabel('x');
+ylabel('y');
+title('Calibration coefficients');
+save('test_workspace.mat');
 %% calibrate actual picture:
 % find corresponding curve fit value
 % flat average / (flat_x,y) (raw - dark)

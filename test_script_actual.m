@@ -1,3 +1,4 @@
+load('test_workspace.mat');
 %% reading in dark images
 exposures = {'30', '60', '120', '180'};
 exposure_nums = str2double(exposures);
@@ -45,14 +46,30 @@ for picture = picture_names(1:1, :)'
     picture_filename = strcat(subfolder_name, picture.(fieldname));
     disp(picture_filename);
     picture_data = fitsread(picture_filename, extname);
-    calibrated_picture = picture_data - dark_image_lib(1);
+    calibrated_picture = flat_calibration_matrix .* (picture_data - dark_image_lib(1));
 
-    figure
-    imshow(calibrated_picture, [0, 10000]);
-    figure
-    imshow(picture_data, [0, 9300]);
+%     figure
+%     imshow(calibrated_picture, [0, 10000]);
+%     figure
+%     imshow(picture_data, [0, 9300]);
+   
     showimage(picture_data, [], 0.05, 99.95);
+    title('uncalibrated');
+    figure
+    h = histogram(log(picture_data));
+    title('uncalibrated picture');
+    disp('asdf');
+    disp(max(max((picture_data))));
     showimage(calibrated_picture, [], 0.05, 99.95);
+    title('calibrated');
+    figure
+    h = histogram(log(calibrated_picture));
+    title('calibrated picture');
+    disp('asdf2');
+    disp(max(max((calibrated_picture))));
+%     figure
+%     h = surf(calibrated_picture);
+%     set(h,'LineStyle','none');
 end
 
 function showimage(image, arg, lower_pctg, higher_pctg)
@@ -71,8 +88,6 @@ function showimage(image, arg, lower_pctg, higher_pctg)
         figure
         lower_bound = prctile(image_line, lower_pctg);
         upper_bound = prctile(image_line, higher_pctg);
-        disp(lower_bound);
-        disp(upper_bound);
         imshow(image, [lower_bound, upper_bound]);
     end
     

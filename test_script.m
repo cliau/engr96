@@ -113,7 +113,7 @@ down = uint8(cols/2 + cols/4);
 mean_picture_center = mean_picture(left:right, up:down);
 flat_average = mean(mean(mean_picture_center));
 
-flat_calibration_matrix = flat_average ./ mean_picture;
+flat_calibration_matrix = (flat_average - bias_matrix) ./ mean_picture;
 
 figure
 h = surf(flat_calibration_matrix);
